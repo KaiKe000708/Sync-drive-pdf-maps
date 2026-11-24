@@ -1,0 +1,11 @@
+﻿{
+    "Origem":  "\\\\servidor\\compartilhamento\\MAPAS PDF",
+    "Destino":  "G:\\Meu Drive\\MAPAS\\MAPAS PDF",
+    "PastaLogs":  "G:\\Meu Drive\\MAPAS\\_LOGS",
+    "PastaArquivados":  "G:\\Meu Drive\\MAPAS\\_ARQUIVADOS",
+    "EspelharDrive":  true,
+    "Tema":  "Sistema",
+    "DiasManterLogs":  90,
+    "Tentativas":  3,
+    "EsperaSegundos":  5
+}

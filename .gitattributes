@@ -1,0 +1,9 @@
+# Scripts do Windows mantêm quebra de linha CRLF
+*.ps1  text eol=crlf
+*.bat  text eol=crlf
+*.json text eol=crlf
+*.md   text eol=lf
+
+# Imagens
+*.png binary
+*.jpg binary

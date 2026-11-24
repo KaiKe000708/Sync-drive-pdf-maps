@@ -1,0 +1,15 @@
+# Arquivos gerados pela ferramenta em cada computador
+config.json
+estado.json
+*.log
+historico.csv
+_LOGS/
+_ARQUIVADOS/
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+*.code-workspace

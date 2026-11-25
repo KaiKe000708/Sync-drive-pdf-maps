@@ -8,6 +8,7 @@ Começou como um arquivo `.bat` com `robocopy` e foi reescrita do zero em PowerS
 ![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4?logo=windows&logoColor=white)
 ![WPF](https://img.shields.io/badge/Interface-WPF%20%2F%20XAML-512BD4?logo=dotnet&logoColor=white)
 ![Google Drive](https://img.shields.io/badge/Google%20Drive-para%20computador-4285F4?logo=googledrive&logoColor=white)
+![Versão](https://img.shields.io/badge/vers%C3%A3o-2.2.1-2F6A43)
 ![Licença](https://img.shields.io/badge/licen%C3%A7a-MIT-2F6A43)
 
 ![Tela principal](screenshots/01_principal_claro.png)
@@ -18,7 +19,7 @@ Começou como um arquivo `.bat` com `robocopy` e foi reescrita do zero em PowerS
 
 | | |
 |---|---|
-| **O que é** | Uma janela que compara a pasta de PDFs do servidor com a pasta do Google Drive e copia só o que é novo ou foi alterado. |
+| **O que é** | Uma janela que compara a pasta de PDFs do servidor com a pasta do Google Drive, copia só o que é novo ou foi alterado e retira do Drive o que saiu do servidor. |
 | **Problema que resolve** | O script antigo usava `robocopy /MIR`, que copiava subpastas desnecessárias e **apagava** do Drive tudo o que não aparecesse no servidor, inclusive numa falha de rede. |
 | **Destaque** | Cópia em duas etapas (servidor, pasta temporária, Drive) com conferência de tamanho, para nunca subir um PDF pela metade para a nuvem. |
 | **Histórico** | Cada alteração vira uma linha num `historico.csv`, consultado por uma tela de relatório com filtros. |
@@ -43,7 +44,7 @@ Ao abrir, a janela já confere se o servidor e o Drive estão acessíveis e most
 |---|---|
 | ![Revisão](screenshots/07_revisao.png) | ![Relatório filtrado](screenshots/05_relatorio_filtro.png) |
 
-> As capturas foram feitas num ambiente de demonstração com nomes e pastas fictícios, criado pelo script [`ferramentas/preparar-demo.ps1`](ferramentas/preparar-demo.ps1).
+> Capturas da ferramenta em uso real, com cerca de 570 PDFs. Nomes de pessoas, fazendas e empresas foram borrados. Para testar com dados fictícios, use o script [`ferramentas/preparar-demo.ps1`](ferramentas/preparar-demo.ps1).
 
 ### Situação de cada arquivo
 
@@ -93,7 +94,7 @@ flowchart LR
     B -->|Novo ou Alterado| D[Pasta temporária]
     D -->|tamanho conferido| E[Drive]
     B -->|Em dia| F[Nada a fazer]
-    B -->|Só no Drive| G[Mantido ou arquivado]
+    B -->|Só no Drive| G[Retirado e guardado<br/>em _ARQUIVADOS]
     E --> H[(historico.csv)]
     G --> H
 ```
@@ -134,7 +135,7 @@ flowchart LR
 1. Baixe pelo botão **Code → Download ZIP**, ou:
 
    ```powershell
-   git clone https://github.com/SEU-USUARIO/sincronizador-mapas-pdf.git
+   git clone https://github.com/KaiKe000708/Sync-Drive-PDF-Maps.git
    ```
 
 2. Copie a pasta `src` para um lugar fixo, por exemplo `C:\Ferramentas\SincronizadorMapas`.
@@ -180,6 +181,20 @@ As opções ficam em `config.json`, criado na primeira execução ao lado do scr
 | `DiasManterLogs` | `90` | Logs mais antigos são removidos. `0` mantém todos. O histórico nunca é apagado |
 | `Tentativas` | `3` | Tentativas por arquivo antes de registrar falha |
 | `EsperaSegundos` | `5` | Intervalo entre as tentativas |
+
+### Desempenho
+
+- Estilos e cores da interface são carregados uma única vez e compartilhados por todas as janelas, para caixas de mensagem, revisão e relatório abrirem sem atraso.
+- A tabela recicla as linhas ao rolar, então listas com centenas de PDFs continuam leves.
+- A busca espera você parar de digitar antes de filtrar.
+- A leitura das pastas e as cópias rodam fora da janela, que nunca congela.
+
+### Ambiente testado
+
+- Windows 11 com Windows PowerShell 5.1.
+- Pasta do servidor acessada por unidade mapeada e por caminho de rede (`\\servidor\...`).
+- Google Drive para computador, com a pasta de destino numa letra de unidade.
+- Pasta real com cerca de 570 PDFs.
 
 ---
 
@@ -239,13 +254,15 @@ O script original, com os caminhos trocados por exemplos, está em [`docs/versao
 - **O histórico começa na versão 2.1.** Execuções anteriores não aparecem no relatório.
 - **"Saiu do servidor" registra a data em que a saída foi notada**, não a data em que o arquivo foi removido do servidor.
 - **Precisa do Google Drive para computador** com a pasta acessível por uma letra de unidade. A ferramenta não usa a API do Google.
-- Os nomes de pastas e arquivos das capturas são fictícios.
+- Nas capturas, nomes de pessoas, fazendas e empresas foram borrados. Ficaram visíveis só o código de cada arquivo (`FAZ-0011`...) e a versão.
 
 ---
 
 ## Autor
 
-Desenvolvido por **SEU NOME**.
+Desenvolvido por **Kaike Garcia Oliveira**.
+
+- GitHub: [@KaiKe000708](https://github.com/KaiKe000708)
 
 ## Licença
 
